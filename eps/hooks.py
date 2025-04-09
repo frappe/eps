@@ -86,7 +86,7 @@ doctype_js = {"*": "public/js/review.js"}
 # ------------
 
 # before_install = "eps.install.before_install"
-# after_install = "eps.install.after_install"
+after_install = "eps.install.after_install"
 
 # Uninstallation
 # ------------
@@ -135,6 +135,9 @@ doctype_js = {"*": "public/js/review.js"}
 doc_events = {
 	"*": {
 		"on_change": "eps.eps.doctype.energy_point_rule.energy_point_rule.process_energy_points",
+	},
+	"User":{
+		"on_trash": "eps.eps.doctype.energy_point_log.delete_energy_point_logs_for_user"
 	}
 }
 
