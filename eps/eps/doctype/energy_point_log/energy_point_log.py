@@ -10,10 +10,7 @@ from frappe.desk.doctype.notification_log.notification_log import (
 	get_title,
 	get_title_html,
 )
-from frappe.desk.doctype.notification_settings.notification_settings import (
-	is_email_notifications_enabled,
-	is_email_notifications_enabled_for_type,
-)
+from eps.eps.doctype.energy_point_notification_settings.energy_point_notification_settings import is_email_notifcations_enabled, is_system_notification_enabled
 from frappe.model.document import Document
 from frappe.utils import cint, get_fullname, get_link_to_form, getdate
 
@@ -60,9 +57,7 @@ class EnergyPointLog(Document):
 
 		frappe.cache.hdel("energy_points", self.user)
 
-		if self.type != "Review" and frappe.get_cached_value(
-			"Notification Settings", self.user, "energy_points_system_notifications"
-		):
+		if self.type != "Review" and is_system_notfication_enabled(self.user):
 			reference_user = self.user if self.type == "Auto" else self.owner
 			notification_doc = {
 				"type": "Energy Point",
@@ -348,7 +343,7 @@ def send_summary(timespan):
 	if not is_energy_point_enabled():
 		return
 
-	if not is_email_notifications_enabled_for_type(frappe.session.user, "Energy Point"):
+	if not is_email_notifications_enabled(frappe.session.user):
 		return
 
 	from_date = frappe.utils.add_to_date(None, weeks=-1)
@@ -368,7 +363,7 @@ def send_summary(timespan):
 	all_users = [
 		user.email
 		for user in get_enabled_system_users()
-		if is_email_notifications_enabled_for_type(user.name, "Energy Point")
+		if is_email_notifications_enabled(user.name)
 	]
 
 	frappe.sendmail(
