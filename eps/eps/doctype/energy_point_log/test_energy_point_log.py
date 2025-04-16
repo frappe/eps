@@ -3,7 +3,7 @@
 import frappe
 from frappe.cache_manager import clear_doctype_map
 from frappe.desk.form.assign_to import add as assign_to
-from frappe.desk.page.user_profile.user_profile import get_energy_points_heatmap_data
+from eps.eps.page.user_profile.user_profile import get_energy_points_heatmap_data
 from frappe.tests import IntegrationTestCase, UnitTestCase
 from frappe.utils.testutils import add_custom_field, clear_custom_fields
 

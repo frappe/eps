@@ -9,12 +9,12 @@ class EnergyPointNotificationSettings(Document):
 	pass
 
 def is_email_notifcations_enabled(user):
-    return frappe.db.get_single.value(
+    return frappe.db.get_value(
 		"Energy Point Notification Settings", user, "send_email"
 	)
 
 def is_system_notification_enabled(user):
-    return  frappe.db.get_single.value(
+    return  frappe.db.get_value(
 		"Energy Point Notification Settings", user, "send_system_notification"
 	)
 
