@@ -1,4 +1,4 @@
-app_name = "EPS"
+app_name = "eps"
 app_title = "EPS"
 app_publisher = "Frappe Technologies"
 app_description = "Energy Points System"
