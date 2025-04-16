@@ -86,7 +86,7 @@ doctype_js = {"*": "public/js/review.js"}
 # ------------
 
 # before_install = "eps.install.before_install"
-after_install = "eps.setup.after_install"
+after_install = "eps.setup.install.after_install"
 
 # Uninstallation
 # ------------
