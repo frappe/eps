@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Notification Settings",
+  "enabled": 1,
+  "modified": "2025-04-23 01:12:47.007672",
+  "module": null,
+  "name": "Show EP Notification Settings",
+  "script": "frappe.ui.form.on('Notification Settings', {\n\trefresh(frm) {\n\t    frm.add_custom_button(\"Show EP Notification Settings\", function(){\n\t        frappe.set_route(['Form', 'Energy Point Notification Settings', frm.doc.name])\n\t    })\n\t}\n})",
+  "view": "Form"
+ }
+]
