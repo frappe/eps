@@ -121,7 +121,7 @@ eps.review = class Review {
 						review_dialog.clear();
 						// this.get_energy_point_timeline_contents().unshift(review);
 						this.frm.timeline.refresh();
-						this.update_reviewers(); 
+						this.update_reviewers();
 						this.update_points();
 					})
 					.finally(() => {

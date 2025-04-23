@@ -426,7 +426,7 @@ class UserProfile {
 	}
 }
 
-class UserProfileTimeline extends frappe.ui.BaseTimeline{
+class UserProfileTimeline extends frappe.ui.BaseTimeline {
 	make() {
 		super.make();
 		this.activity_start = 0;

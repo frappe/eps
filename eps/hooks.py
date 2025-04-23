@@ -44,7 +44,7 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {
-    "*": "public/js/review.js",
+	"*": "public/js/review.js",
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -138,7 +138,7 @@ doc_events = {
 	"*": {
 		"on_change": "eps.eps.doctype.energy_point_rule.energy_point_rule.process_energy_points",
 	},
-	"User":{
+	"User": {
 		"on_trash": "eps.eps.doctype.energy_point_log.delete_energy_point_logs_for_user",
 	},
 }
@@ -236,8 +236,6 @@ leaderboards = "eps.eps.leaderboard.get_leaderboards"
 extend_bootinfo = ["eps.eps.boot.extend_bootinfo"]
 
 app_include_js = ["eps.bundle.js"]
-additional_timeline_content = {
-	"*": "eps.eps.api.get_timeline_for_energy_points"
-}
+additional_timeline_content = {"*": "eps.eps.api.get_timeline_for_energy_points"}
 
 fixtures = ["Custom Field"]

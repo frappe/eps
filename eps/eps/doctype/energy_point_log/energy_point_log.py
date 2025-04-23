@@ -390,5 +390,7 @@ def get_footer_message(timespan):
 		return _("Stats based on last month's performance (from {0} to {1})")
 	else:
 		return _("Stats based on last week's performance (from {0} to {1})")
+
+
 def delete_energy_point_logs_for_user(user):
-    frappe.db.delete("Energy Point Log", {"user": user.name})
+	frappe.db.delete("Energy Point Log", {"user": user.name})
