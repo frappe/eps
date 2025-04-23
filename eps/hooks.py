@@ -241,4 +241,4 @@ additional_timeline_content = {
 	"*": "eps.eps.api.get_timeline_for_energy_points"
 }
 
-fixtures = ["Client Script"]
+fixtures = ["Custom Field"]
