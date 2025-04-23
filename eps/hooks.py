@@ -44,8 +44,8 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {
-    "*": "public/js/review.js", 
-    "Notification Settings": "public/js/notifcation.js"}
+    "*": "public/js/review.js",
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -140,7 +140,6 @@ doc_events = {
 	},
 	"User":{
 		"on_trash": "eps.eps.doctype.energy_point_log.delete_energy_point_logs_for_user",
-  		"after_insert": "eps.eps.doctype.energy_point_notification_settings.energy_point_notification_settings.update_settings"
 	},
 }
 
