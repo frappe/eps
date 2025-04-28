@@ -361,23 +361,27 @@ def send_summary(timespan):
 
 	# select only those users that have energy point email notifications enabled
 	all_users = [
-		user.email
+		user
 		for user in get_enabled_system_users()
-		if is_email_notifcations_enabled(user.name)
+		if is_email_notifications_enabled_for_type(user.name, "Energy Point")
 	]
 
-	frappe.sendmail(
-		subject=f"{timespan} energy points summary",
-		recipients=all_users,
-		template="energy_points_summary",
-		args={
-			"top_performer": user_points[0],
-			"top_reviewer": max(user_points, key=lambda x: x["given_points"]),
-			"standings": user_points[:10],  # top 10
-			"footer_message": get_footer_message(timespan).format(from_date, to_date),
-		},
-		with_container=1,
-	)
+	for user in all_users:
+		frappe.set_user_lang(user.name)
+		frappe.sendmail(
+			subject=_("{0} energy points summary").format(_(timespan)),
+			recipients=user.email,
+			template="energy_points_summary",
+			args={
+				"top_performer": user_points[0],
+				"top_reviewer": max(user_points, key=lambda x: x["given_points"]),
+				"standings": user_points[:10],  # top 10
+				"footer_message": get_footer_message(timespan).format(from_date, to_date),
+			},
+			with_container=1,
+		)
+
+	frappe.set_user_lang(frappe.session.user)
 
 
 def get_footer_message(timespan):
@@ -386,5 +390,6 @@ def get_footer_message(timespan):
 	else:
 		return _("Stats based on last week's performance (from {0} to {1})")
 
+
 def delete_energy_point_logs_for_user(user):
-    frappe.db.delete("Energy Point Log", {"user": user.name})
+	frappe.db.delete("Energy Point Log", {"user": user.name})

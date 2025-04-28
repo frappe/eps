@@ -26,5 +26,6 @@
 }
 
 .recent-activity {
+	padding: var(--padding-md);
 	padding-bottom: 60px;
 }

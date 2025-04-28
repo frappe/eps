@@ -40,7 +40,7 @@ class UserProfile {
 		this.render_points_and_rank();
 		this.render_heatmap();
 		this.render_line_chart();
-		this.render_percentage_chart("type", "Type Distribution");
+		this.render_percentage_chart("type", __("Type Distribution"));
 		this.create_percentage_chart_filters();
 		this.setup_user_activity_timeline();
 	}
@@ -62,6 +62,7 @@ class UserProfile {
 					fieldname: "user",
 					options: "User",
 					label: __("User"),
+					reqd: 1,
 				},
 			],
 			primary_action_label: __("Go"),
@@ -102,7 +103,6 @@ class UserProfile {
 			["Energy Point Log", "user", "=", this.user_id, false],
 			["Energy Point Log", "type", "!=", "Review", false],
 		];
-
 		this.line_chart_config = {
 			timespan: "Last Month",
 			time_interval: "Daily",
@@ -126,6 +126,7 @@ class UserProfile {
 			axisOptions: {
 				xIsSeries: 1,
 			},
+			tooltipOptions: {},
 		});
 		this.update_line_chart_data();
 		this.create_line_chart_filters();
@@ -147,7 +148,7 @@ class UserProfile {
 	render_percentage_chart(field, title) {
 		frappe
 			.xcall(
-				"eps.eps.page.user_profile.user_profile.get_energy_points_percentage_chart_data",
+				"frappe.desk.page.user_profile.user_profile.get_energy_points_percentage_chart_data",
 				{
 					user: this.user_id,
 					field: field,
@@ -188,8 +189,14 @@ class UserProfile {
 	create_line_chart_filters() {
 		let filters = [
 			{
-				label: "All",
-				options: ["All", "Auto", "Criticism", "Appreciation", "Revert"],
+				label: __("All"),
+				options: [
+					{ label: __("All"), value: "All" },
+					{ label: __("Auto"), value: "Auto" },
+					{ label: __("Criticism"), value: "Criticism" },
+					{ label: __("Appreciation"), value: "Appreciation" },
+					{ label: __("Revert"), value: "Revert" },
+				],
 				action: (selected_item) => {
 					if (selected_item === "All") {
 						this.line_chart_filters = [
@@ -209,16 +216,25 @@ class UserProfile {
 				},
 			},
 			{
-				label: "Last Month",
-				options: ["Last Week", "Last Month", "Last Quarter", "Last Year"],
+				label: __("Last Month"),
+				options: [
+					{ label: __("Last Week"), value: "Last Week" },
+					{ label: __("Last Month"), value: "Last Month" },
+					{ label: __("Last Quarter"), value: "Last Quarter" },
+					{ label: __("Last Year"), value: "Last Year" },
+				],
 				action: (selected_item) => {
 					this.line_chart_config.timespan = selected_item;
 					this.update_line_chart_data();
 				},
 			},
 			{
-				label: "Daily",
-				options: ["Daily", "Weekly", "Monthly"],
+				label: __("Daily"),
+				options: [
+					{ label: __("Daily"), value: "Daily" },
+					{ label: __("Weekly"), value: "Weekly" },
+					{ label: __("Monthly"), value: "Monthly" },
+				],
 				action: (selected_item) => {
 					this.line_chart_config.time_interval = selected_item;
 					this.update_line_chart_data();
@@ -236,11 +252,15 @@ class UserProfile {
 	create_percentage_chart_filters() {
 		let filters = [
 			{
-				label: "Type",
-				options: ["Type", "Reference Doctype", "Rule"],
+				label: __("Type"),
+				options: [
+					{ label: __("Type"), value: "Type" },
+					{ label: __("Reference Doctype"), value: "Reference Doctype" },
+					{ label: __("Rule"), value: "Rule" },
+				],
 				fieldnames: ["type", "reference_doctype", "rule"],
 				action: (selected_item, fieldname) => {
-					let title = selected_item + " Distribution";
+					let title = __("{0} Distribution", [__(selected_item)]);
 					this.render_percentage_chart(fieldname, title);
 				},
 			},
@@ -274,12 +294,12 @@ class UserProfile {
 				{
 					fieldtype: "Attach Image",
 					fieldname: "user_image",
-					label: "Profile Image",
+					label: __("Profile Image"),
 				},
 				{
 					fieldtype: "Data",
 					fieldname: "interest",
-					label: "Interests",
+					label: __("Interests"),
 				},
 				{
 					fieldtype: "Column Break",
@@ -287,16 +307,16 @@ class UserProfile {
 				{
 					fieldtype: "Data",
 					fieldname: "location",
-					label: "Location",
+					label: __("Location"),
 				},
 				{
 					fieldtype: "Section Break",
-					fieldname: "Interest",
+					fieldname: __("Interest"),
 				},
 				{
 					fieldtype: "Small Text",
 					fieldname: "bio",
-					label: "Bio",
+					label: __("Bio"),
 				},
 			],
 			primary_action: (values) => {
@@ -388,12 +408,12 @@ class UserProfile {
 
 		const _get_stat_dom = (value, label, icon) => {
 			return `<div class="user-stats-item mt-4">
-				${frappe.utils.icon(icon, "lg", "no-stroke")}
-				<div>
-					<div class="stat-value">${value}</div>
-					<div class="stat-label">${label}</div>
-				</div>
-			</div>`;
+					${frappe.utils.icon(icon, "lg", "no-stroke")}
+					<div>
+						<div class="stat-value">${value}</div>
+						<div class="stat-label">${label}</div>
+					</div>
+				</div>`;
 		};
 
 		this.get_user_rank().then(() => {
@@ -426,7 +446,7 @@ class UserProfile {
 	}
 }
 
-class UserProfileTimeline extends frappe.ui.BaseTimeline{
+class UserProfileTimeline extends frappe.ui.BaseTimeline {
 	make() {
 		super.make();
 		this.activity_start = 0;
