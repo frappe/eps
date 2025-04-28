@@ -5,7 +5,7 @@ from frappe.utils import get_fullname
 def get_leaderboards():
 	return {
 		"User": {
-			"fields": ["points"],
+			"fields": [{"fieldname": "points", "label": _("Points")}],
 			"method": "eps.eps.leaderboard.get_energy_point_leaderboard",
 			"company_disabled": 1,
 			"icon": "users",

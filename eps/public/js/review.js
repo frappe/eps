@@ -183,7 +183,7 @@ eps.review = class Review {
 					<h3 class="popover-header"></h3>
 					<div class="popover-body">
 					</div>
-				</div>'
+				</div>
 			`,
 			content: () => {
 				return `

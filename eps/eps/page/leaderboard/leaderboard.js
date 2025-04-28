@@ -41,39 +41,34 @@ class Leaderboard {
 					this.filters[doctype] = this.leaderboard_config[doctype].fields.map(
 						(field) => {
 							if (typeof field === "object") {
-								return field.label || field.fieldname;
+								return field;
 							}
-							return field;
+							return { fieldname: field, label: __(field) };
 						}
 					);
 				}
-
-				// For translation. Do not remove this
-				// __("This Week"), __("This Month"), __("This Quarter"), __("This Year"),
-				//	__("Last Week"), __("Last Month"), __("Last Quarter"), __("Last Year"),
-				//	__("All Time"), __("Select From Date")
 				this.timespans = [
-					"This Week",
-					"This Month",
-					"This Quarter",
-					"This Year",
-					"Last Week",
-					"Last Month",
-					"Last Quarter",
-					"Last Year",
-					"All Time",
-					"Select Date Range",
+					{ label: __("This Week"), value: "This Week" },
+					{ label: __("This Month"), value: "This Month" },
+					{ label: __("This Quarter"), value: "This Quarter" },
+					{ label: __("This Year"), value: "This Year" },
+					{ label: __("Last Week"), value: "Last Week" },
+					{ label: __("Last Month"), value: "Last Month" },
+					{ label: __("Last Quarter"), value: "Last Quarter" },
+					{ label: __("Last Year"), value: "Last Year" },
+					{ label: __("All Time"), value: "All Time" },
+					{ label: __("Select Date Range"), value: "Select Date Range" },
 				];
 
 				// for saving current selected filters
 				const _initial_doctype = frappe.get_route()[1] || this.doctypes[0];
-				const _initial_timespan = this.timespans[0];
+				const _initial_timespan = this.timespans[0].value;
 				const _initial_filter = this.filters[_initial_doctype];
 
 				this.options = {
 					selected_doctype: _initial_doctype,
 					selected_filter: _initial_filter,
-					selected_filter_item: _initial_filter[0],
+					selected_filter_item: _initial_filter[0].fieldname,
 					selected_timespan: _initial_timespan,
 				};
 
@@ -83,7 +78,7 @@ class Leaderboard {
 	}
 
 	make() {
-		this.$container = $(`<div class="leaderboard page-main-content">
+		this.$container = $(`<div class="leaderboard page-main-content frappe-card mt-2">
 			<div class="leaderboard-graph"></div>
 			<div class="leaderboard-list"></div>
 		</div>`).appendTo(this.page.main);
@@ -119,18 +114,13 @@ class Leaderboard {
 			},
 		});
 
-		this.timespan_select = this.page.add_select(
-			__("Timespan"),
-			this.timespans.map((d) => {
-				return { label: __(d), value: d };
-			})
-		);
+		this.timespan_select = this.page.add_select(__("Timespan"), this.timespans);
 		this.create_date_range_field();
 
 		this.type_select = this.page.add_select(
 			__("Field"),
 			this.options.selected_filter.map((d) => {
-				return { label: __(frappe.model.unscrub(d)), value: d };
+				return { label: d.label, value: d.fieldname };
 			})
 		);
 
@@ -140,8 +130,8 @@ class Leaderboard {
 				this.date_range_field.show();
 			} else {
 				this.date_range_field.hide();
+				this.make_request();
 			}
-			this.make_request();
 		});
 
 		this.type_select.on("change", (e) => {
@@ -186,17 +176,21 @@ class Leaderboard {
 			);
 			this.options.selected_doctype = doctype;
 			this.options.selected_filter = this.filters[doctype];
-			this.options.selected_filter_item = this.filters[doctype][0];
+			this.options.selected_filter_item = this.filters[doctype][0].fieldname;
 
 			this.type_select.empty().add_options(
 				this.options.selected_filter.map((d) => {
-					return { label: __(frappe.model.unscrub(d)), value: d };
+					return { label: d.label, value: d.fieldname };
 				})
 			);
 			if (this.leaderboard_config[this.options.selected_doctype].company_disabled) {
-				$(this.parent).find("[data-original-title=Company]").hide();
+				$(this.parent)
+					.find(`[data-original-title=${__("Company")}]`)
+					.hide();
 			} else {
-				$(this.parent).find("[data-original-title=Company]").show();
+				$(this.parent)
+					.find(`[data-original-title=${__("Company")}]`)
+					.show();
 			}
 
 			this.$sidebar_list.find("li").removeClass("active selected");
@@ -279,7 +273,7 @@ class Leaderboard {
 			frappe.utils.setup_search($(me.parent), ".list-item-container", ".list-id");
 		} else {
 			me.$graph_area.hide();
-			me.message = __("No Items Found");
+			me.message = __("No items found");
 			me.$container.find(".leaderboard-list").html(me.render_list_view());
 		}
 	}
@@ -300,11 +294,11 @@ class Leaderboard {
 	}
 
 	render_list_header() {
-		const _selected_filter = this.options.selected_filter.map((i) => frappe.model.unscrub(i));
+		const _selected_filter = this.options.selected_filter.map((i) => i.label);
 		const fields = ["rank", "name", this.options.selected_filter_item];
 		const filters = fields
 			.map((filter) => {
-				const col = __(frappe.model.unscrub(filter));
+				const col = filter.label || __(frappe.model.unscrub(filter));
 				return `<div class="leaderboard-item list-item_content ellipsis text-muted list-item__content--flex-2
 					header-btn-base ${filter}
 					${col && _selected_filter.indexOf(col) !== -1 ? "text-right" : ""}">
