@@ -228,4 +228,8 @@ function make_review(frm) {
 	}
 }
 
-frappe.route_hooks.post_after_load = make_review;
+frappe.ui.form.on("*", {
+	refresh(frm) {
+		make_review(frm);
+	},
+});
