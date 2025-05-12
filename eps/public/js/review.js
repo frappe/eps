@@ -121,7 +121,7 @@ eps.review = class Review {
 						review_dialog.clear();
 						// this.get_energy_point_timeline_contents().unshift(review);
 						this.frm.timeline.refresh();
-						this.update_reviewers(); 
+						this.update_reviewers();
 						this.update_points();
 					})
 					.finally(() => {
@@ -228,4 +228,8 @@ function make_review(frm) {
 	}
 }
 
-frappe.route_hooks.after_load = make_review;
+frappe.ui.form.on("*", {
+	refresh(frm) {
+		make_review(frm);
+	},
+});

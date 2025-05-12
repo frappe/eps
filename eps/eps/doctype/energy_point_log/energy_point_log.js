@@ -43,6 +43,7 @@ frappe.ui.form.on("Energy Point Log", {
 	make_reference_name_link(frm) {
 		let dt = frm.doc.reference_doctype;
 		let dn = frm.doc.reference_name;
+		if (dt == undefined && dn == undefined) return;
 		frm.fields_dict.reference_name.$input_wrapper
 			.find(".control-value")
 			.wrapInner(`<a href='/app/${frappe.router.slug(dt)}/${dn}'></a>`);

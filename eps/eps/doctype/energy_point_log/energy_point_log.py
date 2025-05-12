@@ -10,7 +10,10 @@ from frappe.desk.doctype.notification_log.notification_log import (
 	get_title,
 	get_title_html,
 )
-from eps.eps.doctype.energy_point_notification_settings.energy_point_notification_settings import is_email_notifcations_enabled, is_system_notification_enabled
+from frappe.desk.doctype.notification_settings.notification_settings import (
+	is_email_notifications_enabled,
+	is_email_notifications_enabled_for_type,
+)
 from frappe.model.document import Document
 from frappe.utils import cint, get_fullname, get_link_to_form, getdate
 
@@ -57,7 +60,9 @@ class EnergyPointLog(Document):
 
 		frappe.cache.hdel("energy_points", self.user)
 
-		if self.type != "Review" and is_system_notification_enabled(self.user):
+		if self.type != "Review" and frappe.get_cached_value(
+			"Notification Settings", self.user, "energy_points_system_notifications"
+		):
 			reference_user = self.user if self.type == "Auto" else self.owner
 			notification_doc = {
 				"type": "Energy Point",
@@ -66,6 +71,7 @@ class EnergyPointLog(Document):
 				"subject": get_notification_message(self),
 				"from_user": reference_user,
 				"email_content": f"<div>{self.reason}</div>" if self.reason else None,
+				"email_header": _("Energy Point Update on {0}").format(self.reference_name),
 			}
 
 			enqueue_create_notification(self.user, notification_doc)
@@ -343,7 +349,7 @@ def send_summary(timespan):
 	if not is_energy_point_enabled():
 		return
 
-	if not is_email_notifcations_enabled(frappe.session.user):
+	if not is_email_notifications_enabled_for_type(frappe.session.user, "Energy Point"):
 		return
 
 	from_date = frappe.utils.add_to_date(None, weeks=-1)
@@ -363,7 +369,7 @@ def send_summary(timespan):
 	all_users = [
 		user.email
 		for user in get_enabled_system_users()
-		if is_email_notifcations_enabled(user.name)
+		if is_email_notifications_enabled_for_type(user.name, "Energy Point")
 	]
 
 	frappe.sendmail(
@@ -386,5 +392,6 @@ def get_footer_message(timespan):
 	else:
 		return _("Stats based on last week's performance (from {0} to {1})")
 
+
 def delete_energy_point_logs_for_user(user):
-    frappe.db.delete("Energy Point Log", {"user": user.name})
+	frappe.db.delete("Energy Point Log", {"user": user.name})

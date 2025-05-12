@@ -1,5 +1,7 @@
-from frappe import _
 import frappe
+from frappe import _
+
+
 def create_default_energy_point_rules():
 	for rule in get_default_energy_point_rules():
 		# check if any rule for ref. doctype exists
@@ -10,7 +12,6 @@ def create_default_energy_point_rules():
 			continue
 		doc = frappe.get_doc(rule)
 		doc.insert(ignore_permissions=True)
-
 
 
 doctype_rule_map = {

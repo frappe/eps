@@ -43,9 +43,6 @@ app_license = "mit"
 # page_js = {"page" : "public/js/file.js"}
 
 # include js in doctype views
-doctype_js = {
-    "*": "public/js/review.js", 
-    "Notification Settings": "public/js/notifcation.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -138,9 +135,8 @@ doc_events = {
 	"*": {
 		"on_change": "eps.eps.doctype.energy_point_rule.energy_point_rule.process_energy_points",
 	},
-	"User":{
+	"User": {
 		"on_trash": "eps.eps.doctype.energy_point_log.delete_energy_point_logs_for_user",
-  		"after_insert": "eps.eps.doctype.energy_point_notification_settings.energy_point_notification_settings.update_settings"
 	},
 }
 
@@ -237,8 +233,8 @@ leaderboards = "eps.eps.leaderboard.get_leaderboards"
 extend_bootinfo = ["eps.eps.boot.extend_bootinfo"]
 
 app_include_js = ["eps.bundle.js"]
-additional_timeline_content = {
-	"*": "eps.eps.api.get_timeline_for_energy_points"
-}
+additional_timeline_content = {"*": "eps.eps.api.get_timeline_for_energy_points"}
 
-fixtures = ["Client Script"]
+fixtures = ["Custom Field"]
+
+notification_email_header = {"Energy Point": "Energy Point Update on {0}"}
