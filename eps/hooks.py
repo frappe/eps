@@ -238,3 +238,12 @@ additional_timeline_content = {"*": "eps.eps.api.get_timeline_for_energy_points"
 fixtures = ["Custom Field"]
 
 notification_email_header = {"Energy Point": "Energy Point Update on {0}"}
+add_to_apps_screen = [
+	{
+		"name": "eps",
+		"logo": "/assets/eps/images/eps.svg",
+		"title": "EPS",
+		"route": "/app/eps",
+		"has_permission": "eps.check_app_permission",
+	}
+]
