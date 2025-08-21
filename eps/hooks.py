@@ -136,7 +136,7 @@ doc_events = {
 		"on_change": "eps.eps.doctype.energy_point_rule.energy_point_rule.process_energy_points",
 	},
 	"User": {
-		"on_trash": "eps.eps.doctype.energy_point_log.delete_energy_point_logs_for_user",
+		"on_trash": "eps.eps.doctype.energy_point_log.energy_point_log.delete_energy_point_logs_for_user",
 	},
 }
 
