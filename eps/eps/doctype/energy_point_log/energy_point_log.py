@@ -394,4 +394,4 @@ def get_footer_message(timespan):
 
 
 def delete_energy_point_logs_for_user(user, event):
-    frappe.db.delete("Energy Point Log", {"user": user.name})
+	frappe.db.delete("Energy Point Log", {"user": user.name})
