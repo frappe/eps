@@ -75,11 +75,11 @@ def get_user_rank(user):
 @frappe.whitelist()
 def update_profile_info(profile_info):
 	profile_info = frappe.parse_json(profile_info)
-	keys = ["location", "interest", "user_image", "bio"]
+	keys = ("location", "interest", "user_image", "bio")
 
-	for key in keys:
-		if key not in profile_info:
-			profile_info[key] = None
+	for key in list(profile_info.keys()):
+		if key not in keys:
+			del profile_info[key]
 
 	user = frappe.get_doc("User", frappe.session.user)
 	user.update(profile_info)
