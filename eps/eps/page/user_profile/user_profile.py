@@ -31,7 +31,7 @@ def get_energy_points_heatmap_data(user: str, date: str | None):
 @frappe.whitelist()
 def get_energy_points_percentage_chart_data(user: str, field: str):
 	if field not in ("type", "reference_doctype", "rule"):
-		frappe.throw("Invalid field for grouping")
+		frappe.throw(frappe._("Invalid field for grouping"))
 
 	result = frappe.get_all(
 		"Energy Point Log",
