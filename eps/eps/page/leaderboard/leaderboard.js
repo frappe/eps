@@ -361,8 +361,8 @@ class Leaderboard {
 
 		const link = `/app/${frappe.router.slug(this.options.selected_doctype)}/${item.name}`;
 		const name_html = item.formatted_name
-			? `<span class="text-muted ellipsis list-id">${item.formatted_name}</span>`
-			: `<a class="grey list-id ellipsis" href="${link}"> ${item.name} </a>`;
+			? $(`<span class="text-muted ellipsis list-id">${item.formatted_name}</span>`).text()
+			: `<a class="grey list-id ellipsis" href="${link}">${$(`<span>${item.name}</span>`).text()}</a>`;
 		return `<div class="list-item">
   				<div class="list-item_content ellipsis list-item__content--flex-2 rank text-center">
   					<span class="text-muted ellipsis">${index}</span>
