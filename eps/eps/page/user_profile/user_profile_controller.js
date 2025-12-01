@@ -99,8 +99,8 @@ class UserProfile {
 
 	render_line_chart() {
 		this.line_chart_filters = [
-			["Energy Point Log", "user", "=", this.user_id, false],
-			["Energy Point Log", "type", "!=", "Review", false],
+			["Energy Point Log", "user", "=", this.user_id],
+			["Energy Point Log", "type", "!=", "Review"],
 		];
 
 		this.line_chart_config = {

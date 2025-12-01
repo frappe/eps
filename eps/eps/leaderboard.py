@@ -31,7 +31,7 @@ def get_energy_point_leaderboard(date_range, company=None, field=None, limit=Non
 		filters.append(["creation", "between", [date_range[0], date_range[1]]])
 	energy_point_users = frappe.get_all(
 		"Energy Point Log",
-		fields=["user as name", "sum(points) as value"],
+		fields=["user as name", {"SUM": "points", "as": "value"}],
 		filters=filters,
 		group_by="user",
 		order_by="value desc",
