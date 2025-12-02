@@ -38,7 +38,7 @@ def get_energy_points_percentage_chart_data(user: str, field: str):
 		filters={"user": user, "type": ["!=", "Review"]},
 		group_by=field,
 		order_by=field,
-		fields=[field, "ABS(sum(points)) as points"],
+		fields=[field, {"ABS": [{"SUM": "points"}], "as": "points"}],
 		as_list=True,
 	)
 
@@ -55,8 +55,8 @@ def get_user_rank(user: str):
 		"Energy Point Log",
 		group_by="`tabEnergy Point Log`.`user`",
 		filters={"creation": [">", month_start], "type": ["!=", "Review"]},
-		fields=["user", "sum(points)"],
-		order_by="sum(points) desc",
+		fields=["user", {"SUM": "points", "as": "total_points"}],
+		order_by="total_points desc",
 		as_list=True,
 	)
 
@@ -64,8 +64,8 @@ def get_user_rank(user: str):
 		"Energy Point Log",
 		group_by="`tabEnergy Point Log`.`user`",
 		filters={"type": ["!=", "Review"]},
-		fields=["user", "sum(points)"],
-		order_by="sum(points) desc",
+		fields=["user", {"SUM": "points", "as": "total_points"}],
+		order_by="total_points desc",
 		as_list=True,
 	)
 
