@@ -1,16 +1,18 @@
 exclude: 'node_modules|.git'
 default_stages: [pre-commit]
+default_install_hook_types: [pre-commit, commit-msg]
 fail_fast: false
 
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.3.0
+    rev: v5.0.0
     hooks:
       - id: trailing-whitespace
         files: "eps.*"
         exclude: ".*json$|.*txt$|.*csv|.*md|.*svg"
-      - id: check-yaml
+      - id: no-commit-to-branch
+        args: ['--branch', 'develop']
       - id: check-merge-conflict
       - id: check-ast
       - id: check-json
@@ -19,14 +21,17 @@ repos:
       - id: debug-statements
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.2.0
+    rev: v0.13.2
     hooks:
       - id: ruff
-        name: "Run ruff linter and apply fixes"
-        args: ["--fix"]
+        name: "Run ruff import sorter"
+        args: ["--select=I", "--fix"]
+
+      - id: ruff
+        name: "Run ruff linter"
 
       - id: ruff-format
-        name: "Format Python code"
+        name: "Run ruff formatter"
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.7.1
@@ -60,6 +65,13 @@ repos:
                 eps/templates/includes/.*|
                 eps/public/js/lib/.*
             )$
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.22.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies: ['conventional-changelog-conventionalcommits']
 
 ci:
     autoupdate_schedule: weekly
