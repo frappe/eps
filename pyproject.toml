@@ -4,7 +4,7 @@ authors = [
     { name = "Frappe Technologies", email = "developers@frappe.io"}
 ]
 description = "Energy Points System"
-requires-python = ">=3.10"
+requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]
 dependencies = [
